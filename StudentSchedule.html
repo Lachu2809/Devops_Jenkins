@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Schedule</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Top Panel */
+        .top-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #053760;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        /* Logo in Top Left Corner */
+        .top-panel .header-logo {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100px; /* Adjust the logo size */
+            height: 100 auto;
+        }
+
+        .top-panel .username {
+            font-size: 1rem;
+        }
+
+        .top-panel .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .top-panel .buttons button {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            background-color: #ffffff;
+            color: #77baf2;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .top-panel .buttons button:hover {
+            background-color: #d1e7ff;
+        }
+
+        /* Table Container */
+        .table-container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #4682B4;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover {
+            background-color: #ddd;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .top-panel {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .buttons {
+                flex-wrap: wrap;
+            }
+
+            .top-panel .username {
+                font-size: 0.9rem;
+            }
+
+            table th, table td {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="top-panel">
+        <img src="logo2.ico" alt="Department Logo" class="header-logo"> <!-- Logo Image -->
+        <div class="username">
+            Logged in as: <span id="username">john_doe</span>
+        </div>
+        <div class="buttons">
+            <button onclick="goBack()">Back</button>
+            <button onclick="goHome()">Home</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </header>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Exam Name</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Venue</th>
+                </tr>
+            </thead>
+            <tbody id="scheduleTable">
+                <!-- Rows will be populated dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Replace this function with a call to your backend API
+        function fetchSchedule() {
+            const scheduleData = [
+                { examName: "Math Exam", date: "2025-01-15", time: "10:00 AM", venue: "Room 101" },
+                { examName: "Science Exam", date: "2025-01-17", time: "2:00 PM", venue: "Room 202" },
+                { examName: "History Exam", date: "2025-01-20", time: "9:00 AM", venue: "Room 303" },
+                { examName: "English Exam", date: "2025-01-22", time: "11:00 AM", venue: "Room 404" }
+            ];
+            return scheduleData;
+        }
+
+        // Populate the table with schedule data
+        function populateScheduleTable() {
+            const scheduleTable = document.getElementById('scheduleTable');
+            const scheduleData = fetchSchedule();
+
+            scheduleData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.examName}</td>
+                    <td>${item.date}</td>
+                    <td>${item.time}</td>
+                    <td>${item.venue}</td>
+                `;
+                scheduleTable.appendChild(row);
+            });
+        }
+
+        // Navigation button actions
+        function goBack() {
+            window.history.back();
+        }
+
+        function goHome() {
+            window.location.href = "home.html"; // Update with actual home page URL
+        }
+
+        function logout() {
+            window.location.href = "logout.html"; // Update with actual logout page URL or functionality
+        }
+
+        // Populate the table on page load
+        document.addEventListener('DOMContentLoaded', populateScheduleTable);
+    </script>
+</body>
+</html>

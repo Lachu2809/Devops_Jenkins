@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="logo1.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeptzCS - index</title>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Audiowide', sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Hero Section */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #010a13, #0e0e0e);
+            animation: fadeIn 2s ease-in-out; /* Fade-in animation */
+        }
+
+        .hero-logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+            animation: pulse 3s infinite ease-in-out; /* Pulsating animation */
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: slideInUp 1s ease-out; /* Slide-in from bottom */
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 30px;
+            animation: fadeIn 3s ease-in; /* Fade-in for description */
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .hero-button {
+            padding: 15px 30px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #000;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            animation: fadeIn 4s ease-in; /* Buttons fade in */
+        }
+
+        .btn-student-login {
+            background-color: #00bfff;
+        }
+
+        .btn-student-login:hover {
+            background-color: #007acc;
+            transform: scale(1.1); /* Zoom on hover */
+        }
+
+        .btn-admin-login {
+            background-color: #f0ad4e;
+        }
+
+        .btn-admin-login:hover {
+            background-color: #e88c0c;
+            transform: scale(1.1); /* Zoom on hover */
+        }
+
+        .btn-signup {
+            background-color: #5cb85c;
+        }
+
+        .btn-signup:hover {
+            background-color: #4cae4c;
+            transform: scale(1.1); /* Zoom on hover */
+        }
+
+        /* Department Overview Section */
+        .overview-section {
+            padding: 60px 20px;
+            text-align: center;
+            background-color: #111;
+            animation: fadeIn 3s ease-in; /* Fade-in for overview */
+        }
+
+        .overview-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .overview-text {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Key Features Section */
+        .features-section {
+            padding: 60px 20px;
+            text-align: center;
+            background-color: #1a1a1a;
+            animation: fadeIn 3s ease-in; /* Fade-in for features */
+        }
+
+        .features-title {
+            font-size: 2rem;
+            margin-bottom: 40px;
+        }
+
+        .features-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .feature-box {
+            width: 250px;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px); /* Lift effect on hover */
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-text {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Footer Section */
+        .footer-section {
+            padding: 20px;
+            text-align: center;
+            background-color: #111;
+            color: #777;
+        }
+
+        .footer-section a {
+            color: #00bfff;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive for smaller screens */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .features-container {
+                flex-direction: column;
+            }
+
+            .feature-box {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <img src="Main_logo.png" alt="DeptzCS Logo" class="hero-logo">
+        <h1 class="hero-title">Welcome to the Department of <br>Computer Science And Engineering</h1>
+        <p class="hero-description">
+            Explore innovative courses, research opportunities, and the tools you need to succeed in the fast-growing tech world. Join us in shaping the future!
+        </p>
+        <div class="hero-buttons">
+            <a href="student.html">
+                <button class="hero-button btn-student-login">Student Login</button>
+            </a>
+            <a href="admin-login.html">
+                <button class="hero-button btn-admin-login">Admin Login</button>
+            </a>
+            <a href="signup.html">
+                <button class="hero-button btn-signup">Sign Up</button>
+            </a>
+        </div>
+    </div>
+    <div class="overview-section">
+        <h2 class="overview-title">About Our Department</h2>
+        <p class="overview-text">
+            The Department of Computer Science is committed to providing cutting-edge education in areas such as artificial intelligence, cybersecurity, data science, and software engineering. Our experienced faculty and collaborative environment help prepare students to be leaders in the technology industry.
+        </p>
+    </div>
+    <div class="features-section">
+        <h2 class="features-title">Key Features</h2>
+        <div class="features-container">
+            <div class="feature-box">
+                <div class="feature-icon">💻</div>
+                <h3 class="feature-title">State-of-the-Art Labs</h3>
+                <p class="feature-text">Work with the latest technologies and tools in our modern computer science labs.</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-icon">🎓</div>
+                <h3 class="feature-title">Expert Faculty</h3>
+                <p class="feature-text">Learn from industry experts and experienced professors who are passionate about teaching.</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-icon">🚀</div>
+                <h3 class="feature-title">Innovative Research</h3>
+                <p class="feature-text">Participate in cutting-edge research projects and contribute to new discoveries in the tech world.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer-section">
+        <p>2025 DeptzCS. All Rights Reserved. | <a href="privacy-policy.html">Privacy Policy</a></p>
+    </div>
+
+</body>
+</html>

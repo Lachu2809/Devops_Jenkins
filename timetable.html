@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable - DeptzCS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Audiowide&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #0e0e0e;
+            font-family: 'Roboto', sans-serif;
+            color: #fff;
+        }
+
+        header {
+            background-color: #000;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #00bfff;
+        }
+
+        header img {
+            height: 50px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Audiowide', sans-serif;
+            font-size: 2.5rem;
+            color: #00bfff;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            border: 1px solid #00bfff;
+            padding: 15px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #00bfff;
+        }
+
+        td {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        /* Vertical text for Break Time and Lunch Time */
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            font-weight: bold;
+        }
+
+        .back-button {
+            padding: 10px 20px;
+            background: #00bfff;
+            border: none;
+            border-radius: 25px;
+            color: #000;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #007acc;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- Logo (Link to Homepage) -->
+        <a href="index.html">
+            <img src="Main_logo.png" alt="DeptzCS Logo">
+        </a>
+    </header>
+
+    <div class="container">
+        <h1>Timetable</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>9:15 - 10:05 AM</th>
+                    <th>10:05 - 10:55 AM</th>
+                    <th>10:55 - 11:10 AM</th>
+                    <th>11:10 - 12:00 AM</th>
+                    <th>12:00 - 12:50 PM</th>
+                    <th>12:50 - 01:45 PM</th>
+                    <th>01:45 - 2:35 PM</th>
+                    <th>2:35 - 3:25 PM</th>
+                    <th>3:25 - 3:40 PM</th>
+                    <th>3:40 - 4:30 PM</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Monday</td>
+                    <td>DBMS LAB</td>
+                    <td>DBMS LAB</td>
+                    <td rowspan="5" class="vertical-text">Break Time</td> <!-- Break Time vertically spanning across all days -->
+                    <td>DBMS LAB</td>
+                    <td>DBMS LAB</td>
+                    <td rowspan="5" class="vertical-text">Lunch Time</td> <!-- Lunch Time vertically spanning across all days -->
+                    <td>NPTEL</td>
+                    <td>AI & ML</td>
+                    <td rowspan="5" class="vertical-text">Break Time</td> <!-- Break Time vertically spanning across all days -->
+                    <td>TOC</td>
+                </tr>
+                <tr>
+                    <td>Tuesday</td>
+                    <td>SAS-iv</td>
+                    <td>SAS-iv</td>
+                    <td>SAS-iv</td>
+                    <td>TOC</td>
+                    <td>LIB</td>
+                    <td>DBMS</td>
+                    <td>EVS</td>
+                </tr>
+                <tr>
+                    <td>Wednesday</td>
+                    <td>AI & ML</td>
+                    <td>AJP</td>
+                    <td>DBMS</td>
+                    <td>EVS</td>
+                    <td>FDS</td>
+                    <td>FDS LAB</td>
+                    <td>FDS LAB</td>
+                </tr>
+                <tr>
+                    <td>Thursday</td>
+                    <td>TOC</td>
+                    <td>FDS</td>
+                    <td>AI & ML</td>
+                    <td>H/A/P</td>
+                    <td>AJP</td>
+                    <td>EVS</td>
+                    <td>DBMS</td>
+                </tr>
+                <tr>
+                    <td>Friday</td>
+                    <td>AJP LAB</td>
+                    <td>AJP LAB</td>
+                    <td>AJP LAB</td>
+                    <td>AJP LAB</td>
+                    <td>FDS</td>
+                    <td>TOC</td>
+                    <td>AJP</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button class="back-button" onclick="location.href='home.html'">Back to Home</button>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="logo2.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - DeptzCS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #010a13, #0e0e0e);
+            font-family: 'Audiowide', sans-serif;
+            color: #fff;
+        }
+
+        .login-container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 15px;
+            width: 320px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 120px; /* Increased size */
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #0056b3;
+            border-radius: 25px;
+            background: #f4f4f4;
+            font-size: 1rem;
+            outline: none;
+            color: #000;
+            transition: border 0.3s ease;
+        }
+
+        .login-input:focus {
+            border-color: #00bfff;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #00bfff;
+            border: none;
+            border-radius: 25px;
+            color: #000;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-button:hover {
+            background-color: #007acc;
+        }
+
+        .show-password-container {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .show-password-container label {
+            font-size: 0.9rem;
+            color: #00bfff;
+            margin-left: 5px;
+        }
+
+        /* Link to sign up */
+        .signup-link {
+            margin-top: 15px;
+            color: #00bfff;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .login-container {
+                width: 90vw;
+            }
+
+            .login-input, .login-button {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <img src="Main_logo.png" alt="DeptzCS Logo" class="login-logo">
+
+        <form action="Admin-login-handler.php" method="POST">
+            <input type="email" name="email" placeholder="Email Address" class="login-input" required>
+            <input type="password" name="password" id="password" placeholder="Password" class="login-input" required>
+
+            <!-- Show password checkbox -->
+            <div class="show-password-container">
+                <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()">
+                <label for="show-password">Show Password</label>
+            </div>
+
+            <button type="submit" class="login-button">Login</button>
+        </form>
+
+        <!-- Sign up link -->
+        <a href="signup.html" class="signup-link">Don't have an account? Sign Up</a>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('password');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+            } else {
+                passwordField.type = 'password';
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="logo2.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - DeptzCS</title>
+    <!-- Google Font Link -->
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and setup */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black; /* Change background to black */
+            font-family: 'Audiowide', sans-serif;
+            color: #fff;
+        }
+
+        /* Sign up container */
+        .signup-container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 15px;
+            width: 320px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); /* Soft white shadow */
+            text-align: center;
+        }
+
+        /* Logo styling */
+        .signup-logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        /* Input fields styling */
+        .signup-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #0056b3;
+            border-radius: 25px;
+            background: #f4f4f4;
+            font-size: 1rem;
+            outline: none;
+            color: #000;
+            transition: border 0.3s ease;
+        }
+
+        .signup-input:focus {
+            border-color: #00bfff;
+        }
+
+        /* Sign up button styling */
+        .signup-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #00bfff;
+            border: none;
+            border-radius: 25px;
+            color: #000;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .signup-button:hover {
+            background-color: #007acc;
+        }
+
+        /* Links */
+        .links-container {
+            margin-top: 20px;
+        }
+
+        .back-to-login {
+            display: block;
+            margin: 10px 0;
+            color: #00bfff;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-to-login:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile-specific adjustments using media queries */
+        @media (max-width: 600px) {
+            .signup-container {
+                width: 90vw;
+            }
+
+            .signup-input, .signup-button {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sign Up Container -->
+    <div class="signup-container">
+        <!-- Logo -->
+        <img src="Main_logo.png" alt="DeptzCS Logo" class="signup-logo">
+
+        <!-- Sign Up Form -->
+        <form action="signup-handler.php" method="POST">
+            <input type="text" name="fullname" placeholder="Full Name" class="signup-input" required>
+            <input type="email" name="email" placeholder="Email Address" class="signup-input" required>
+            <input type="password" name="password" placeholder="Password" class="signup-input" required>
+            <button type="submit" class="signup-button">Sign Up</button>
+        </form>
+
+        <!-- Back to Login Links -->
+        <div class="links-container">
+            <a href="student.html" class="back-to-login">Student Login</a>
+            <a href="admin-login.html" class="back-to-login">Admin Login</a>
+        </div>
+    </div>
+
+</body>
+</html>

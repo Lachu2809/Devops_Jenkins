@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task - Nexora</title>
+    <link rel="icon" href="Main logo.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Task model*/
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #0e0e0e;
+            font-family: 'Audiowide', sans-serif;
+            color: #fff;
+        }
+        header {
+            background-color: #000;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #00bfff;
+        }
+        header a {
+            color: #00bfff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        header a:hover {
+            color: #007acc;
+        }
+        header img {
+            height: 50px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #00bfff;
+            margin-bottom: 30px;
+        }
+        .task-gamified {
+            text-align: center;
+            background: linear-gradient(135deg, #007acc, #00bfff);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        .task-gamified h3 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .task-gamified .progress-bar {
+            width: 100%;
+            background: #111;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .task-gamified .progress {
+            height: 20px;
+            background: #00bfff;
+            border-radius: 10px;
+            width: 0;
+            transition: width 0.5s ease;
+        }
+        .task-gamified .points {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        .task-gamified .badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .task-gamified .badge {
+            background: #111;
+            padding: 10px;
+            border: 2px solid #00bfff;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+        .task-gamified .task-list {
+            text-align: left;
+        }
+        .task-gamified .task-item {
+            background: #111;
+            padding: 15px;
+            border: 2px solid #00bfff;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .task-gamified .task-item:hover {
+            background: rgba(0, 191, 255, 0.1);
+        }
+        .task-gamified .task-item h4 {
+            margin: 0;
+            color: #00bfff;
+        }
+        .task-gamified .task-item p {
+            margin: 5px 0;
+            color: #ccc;
+        }
+        .task-gamified .task-item.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .mcq-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        .mcq-content {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #fff;
+            position: relative;
+        }
+        .mcq-content h3 {
+            color: #00bfff;
+            margin-bottom: 20px;
+        }
+        .mcq-content .question {
+            margin-bottom: 20px;
+        }
+        .mcq-content .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .mcq-content .option {
+            background: #111;
+            padding: 10px;
+            border: 2px solid #00bfff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .mcq-content .option:hover {
+            background: rgba(0, 191, 255, 0.1);
+        }
+        .mcq-content .option.correct {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+        .mcq-content .option.incorrect {
+            background: #FF5733;
+            border-color: #FF5733;
+        }
+        .mcq-content .next-button {
+            background: #00bfff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            color: #000;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .mcq-content .next-button:hover {
+            background: #007acc;
+        }
+        .reset-button {
+            background: #FF5733;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .reset-button:hover {
+            background: #FF0000;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html">
+            <img src="Main logo.png" alt="DeptzCS Logo">
+        </a>
+    </header>
+    <div class="container">
+        <h1>Task: Gamified Challenges</h1>
+        <div class="task-gamified">
+            <div class="progress-bar">
+                <div class="progress" id="taskProgress"></div>
+            </div>
+            <div class="points" id="taskPoints">Points: 0</div>
+            <div class="badges" id="taskBadges">
+                <div class="badge">Beginner</div>
+            </div>
+            <div class="task-list">
+                <div class="task-item" onclick="startMCQ('aptitude')">
+                    <h4>Task 1: Aptitude Quiz</h4>
+                    <p>Earn 20 points</p>
+                </div>
+                <div class="task-item" onclick="startMCQ('reasoning')">
+                    <h4>Task 2: Reasoning Quiz</h4>
+                    <p>Earn 10 points</p>
+                </div>
+                <div class="task-item" onclick="startMCQ('technology')">
+                    <h4>Task 3: Technology Quiz</h4>
+                    <p>Earn 30 points</p>
+                </div>
+                <div class="task-item" onclick="startMCQ('programming')">
+                    <h4>Task 4: Programming Quiz</h4>
+                    <p>Earn 40 points</p>
+                </div>
+            </div>
+            <!-- Reset Button -->
+            <button class="reset-button" onclick="resetTasks()">Reset Tasks</button>
+        </div>
+    </div>
+
+    <!-- MCQ Modal -->
+    <div id="mcqModal" class="mcq-modal">
+        <div class="mcq-content">
+            <h3 id="mcqTitle">MCQ Quiz</h3>
+            <div class="question" id="question"></div>
+            <div class="options" id="options"></div>
+            <button class="next-button" onclick="nextQuestion()">Next</button>
+        </div>
+    </div>
+
+    <!-- JavaScript for Task Module -->
+    <script>
+
+        let userPoints = 0;
+        let progress = 0;
+        let currentQuestionIndex = 0;
+        let currentQuiz = [];
+        let correctAnswers = 0;
+
+        // Check if tasks are completed for the day
+        const today = new Date().toDateString();
+        let dailyTasksCompleted = JSON.parse(localStorage.getItem("dailyTasksCompleted")) || { date: today, points: 0, tasks: {} };
+
+        if (dailyTasksCompleted.date !== today) {
+            // Reset daily tasks if it's a new day
+            dailyTasksCompleted = { date: today, points: 0, tasks: {} };
+            localStorage.setItem("dailyTasksCompleted", JSON.stringify(dailyTasksCompleted));
+        }
+
+        // Initialize user points and progress
+        userPoints = dailyTasksCompleted.points;
+        progress = userPoints;
+        document.getElementById("taskPoints").innerText = `Points: ${userPoints}`;
+        document.getElementById("taskProgress").style.width = `${(progress / 100) * 100}%`;
+
+        // Disable tasks if daily limit is reached
+        if (userPoints >= 100) {
+            disableAllTasks();
+        }
+
+        const quizzes = {
+            aptitude: [
+                {
+                    question: "What is 20% of 100?",
+                    options: ["10", "20", "30", "40"],
+                    answer: "20"
+                },
+                {
+                    question: "If a train travels 300 km in 3 hours, what is its speed?",
+                    options: ["100 km/h", "150 km/h", "200 km/h", "250 km/h"],
+                    answer: "100 km/h"
+                }
+            ],
+            reasoning: [
+                {
+                    question: "If all Bloops are Razzies and all Razzies are Lazzies, are all Bloops definitely Lazzies?",
+                    options: ["Yes", "No", "Maybe", "Cannot determine"],
+                    answer: "Yes"
+                },
+                {
+                    question: "What comes next in the sequence: 2, 4, 8, 16, ___?",
+                    options: ["24", "32", "64", "128"],
+                    answer: "32"
+                }
+            ],
+            technology: [
+                {
+                    question: "What does HTML stand for?",
+                    options: ["HyperText Markup Language", "HighText Machine Language", "HyperText Machine Language", "None of the above"],
+                    answer: "HyperText Markup Language"
+                },
+                {
+                    question: "Which protocol is used for secure communication over the web?",
+                    options: ["HTTP", "FTP", "HTTPS", "SMTP"],
+                    answer: "HTTPS"
+                },
+                {
+                    question: "What is the primary function of a DNS server?",
+                    options: ["Store website data", "Translate domain names to IP addresses", "Encrypt data", "Manage email servers"],
+                    answer: "Translate domain names to IP addresses"
+                }
+            ],
+            programming: [
+                {
+                    question: "Which language is used for web development?",
+                    options: ["Python", "Java", "JavaScript", "C++"],
+                    answer: "JavaScript"
+                },
+                {
+                    question: "What is the output of `console.log(typeof null)` in JavaScript?",
+                    options: ["null", "undefined", "object", "string"],
+                    answer: "object"
+                }
+            ]
+        };
+
+        function startMCQ(category) {
+            if (dailyTasksCompleted.tasks[category]) {
+                alert("You have already completed this task today!");
+                return;
+            }
+            if (userPoints >= 100) {
+                alert("Daily points limit reached! Come back tomorrow.");
+                return;
+            }
+            currentQuiz = quizzes[category];
+            currentQuiz.category = category; // Add category to the quiz object
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            showQuestion();
+            document.getElementById("mcqModal").style.display = "flex";
+        }
+
+        function showQuestion() {
+            const questionData = currentQuiz[currentQuestionIndex];
+            document.getElementById("question").innerText = questionData.question;
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            questionData.options.forEach((option, index) => {
+                const optionDiv = document.createElement("div");
+                optionDiv.className = "option";
+                optionDiv.innerText = option;
+                optionDiv.onclick = () => checkAnswer(option, questionData.answer);
+                optionsDiv.appendChild(optionDiv);
+            });
+        }
+
+        function checkAnswer(selectedAnswer, correctAnswer) {
+            const options = document.querySelectorAll(".option");
+            options.forEach(option => {
+                if (option.innerText === correctAnswer) {
+                    option.classList.add("correct");
+                }
+                if (option.innerText === selectedAnswer && selectedAnswer !== correctAnswer) {
+                    option.classList.add("incorrect");
+                }
+                option.onclick = null; // Disable further clicks
+            });
+
+            if (selectedAnswer === correctAnswer) {
+                correctAnswers++;
+                // Award points based on the quiz category
+                let pointsEarned = 0;
+                switch (currentQuiz.category) {
+                    case "aptitude":
+                        pointsEarned = 10; // 10 points per question (2 questions → 20 points total)
+                        break;
+                    case "reasoning":
+                        pointsEarned = 5; // 5 points per question (2 questions → 10 points total)
+                        break;
+                    case "technology":
+                        pointsEarned = 10; // 10 points per question (3 questions → 30 points total)
+                        break;
+                    case "programming":
+                        pointsEarned = 20; // 20 points per question (2 questions → 40 points total)
+                        break;
+                }
+                userPoints += pointsEarned;
+                dailyTasksCompleted.points = userPoints;
+                document.getElementById("taskPoints").innerText = `Points: ${userPoints}`;
+                progress += pointsEarned;
+                document.getElementById("taskProgress").style.width = `${(progress / 100) * 100}%`;
+
+                if (userPoints >= 100) {
+                    disableAllTasks();
+                    alert("Daily points limit reached! Come back tomorrow.");
+                }
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuiz.length) {
+                showQuestion();
+            } else {
+                alert(`Quiz completed! You scored ${correctAnswers}/${currentQuiz.length}.`);
+                document.getElementById("mcqModal").style.display = "none";
+                // Mark task as completed for the day
+                dailyTasksCompleted.tasks[currentQuiz.category] = true;
+                localStorage.setItem("dailyTasksCompleted", JSON.stringify(dailyTasksCompleted));
+            }
+        }
+
+        function disableAllTasks() {
+            const taskItems = document.querySelectorAll(".task-item");
+            taskItems.forEach(task => task.classList.add("disabled"));
+        }
+
+        // Reset Tasks Function
+        function resetTasks() {
+            dailyTasksCompleted = { date: new Date().toDateString(), points: 0, tasks: {} };
+            localStorage.setItem("dailyTasksCompleted", JSON.stringify(dailyTasksCompleted));
+            userPoints = 0;
+            progress = 0;
+            document.getElementById("taskPoints").innerText = `Points: ${userPoints}`;
+            document.getElementById("taskProgress").style.width = `${(progress / 100) * 100}%`;
+            const taskItems = document.querySelectorAll(".task-item");
+            taskItems.forEach(task => task.classList.remove("disabled"));
+            alert("Tasks have been reset!");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charity Module - DeptzCS</title>
+    <link rel="icon" href="Main_logo.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        :root {
+            --primary: #00bfff;
+            --primary-light: #4895ef;
+            --secondary: #007acc;
+            --dark: #0e0e0e;
+            --light: #f8f9fa;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --gray: #6c757d;
+            --card-bg: #111;
+            --charity: #00bfff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Audiowide', sans-serif;
+            background-color: #0e0e0e;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #000;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #00bfff;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .logo-text {
+            color: #00bfff;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-button {
+            background: #111;
+            color: #00bfff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            border: 2px solid #00bfff;
+        }
+
+        .nav-button:hover {
+            background: rgba(0, 191, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-button.charity {
+            background: var(--charity);
+            color: white;
+            border-color: var(--charity);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #fff;
+            position: relative;
+        }
+
+        .page-title h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #00bfff;
+        }
+
+        .page-title p {
+            color: #ccc;
+            font-size: 1.1rem;
+        }
+
+        .charity-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .charity-dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .scanner-section,
+        .donation-settings,
+        .donation-sidebar {
+            background: #111;
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid #00bfff;
+            box-shadow: 0 8px 30px rgba(0, 191, 255, 0.3);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            color: #00bfff;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .scanner-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .scanner-placeholder {
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            background: #0e0e0e;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #00bfff;
+        }
+
+        .scanner-placeholder::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--charity);
+            animation: scan 2s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .scanner-placeholder i {
+            font-size: 3rem;
+            color: #00bfff;
+            margin-bottom: 1rem;
+        }
+
+        .scanner-placeholder p {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .scanner-controls {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .scanner-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            font-family: 'Audiowide', sans-serif;
+        }
+
+        .scanner-btn.primary {
+            background: #00bfff;
+            color: #000;
+        }
+
+        .scanner-btn.secondary {
+            background: #0e0e0e;
+            color: #00bfff;
+            border: 2px solid #00bfff;
+        }
+
+        .scanner-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 191, 255, 0.5);
+        }
+
+        .setting-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .setting-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #00bfff;
+        }
+
+        .setting-description {
+            font-size: 0.8rem;
+            color: #ccc;
+            margin-bottom: 0.8rem;
+        }
+
+        .dropdown {
+            position: relative;
+            width: 100%;
+        }
+
+        .dropdown-toggle {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 2px solid #00bfff;
+            background: #0e0e0e;
+            color: #fff;
+            font-family: 'Audiowide', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #111;
+            border: 2px solid #00bfff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 0.8rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: #fff;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(0, 191, 255, 0.3);
+        }
+
+        .range-slider {
+            width: 100%;
+            margin-top: 1rem;
+            accent-color: #00bfff;
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        .donation-sidebar {
+            position: sticky;
+            top: 1.5rem;
+        }
+
+        .donation-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            background: rgba(114, 9, 183, 0.1);
+            flex: 1;
+            margin: 0 0.5rem;
+            border: 1px solid #00bfff;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00bfff;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #ccc;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .goal-progress {
+            height: 8px;
+            background: #0e0e0e;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #00bfff;
+            width: 65%;
+            border-radius: 4px;
+        }
+
+        .goal-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        .goal-amount {
+            color: #00bfff;
+            font-weight: 600;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #111;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+            border: 2px solid #00bfff;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #00bfff;
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            color: #00bfff;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header p {
+            color: #ccc;
+        }
+
+        .payment-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            color: #00bfff;
+            margin: 1rem 0;
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #00bfff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #0e0e0e;
+        }
+
+        .payment-method:hover {
+            background: rgba(0, 191, 255, 0.1);
+        }
+
+        .payment-method.active {
+            background: rgba(0, 191, 255, 0.2);
+        }
+
+        .payment-method i {
+            font-size: 1.8rem;
+            margin-right: 1rem;
+            color: #00bfff;
+        }
+
+        .payment-method-name {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            color: #fff;
+        }
+
+        .payment-method-desc {
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        .confirm-btn {
+            background: #00bfff;
+            color: #000;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Audiowide', sans-serif;
+        }
+
+        .confirm-btn:hover {
+            background: #007acc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 191, 255, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-button {
+                flex: 1;
+                text-align: center;
+                padding: 0.6rem;
+            }
+            
+            .donation-stats {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .stat-item {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="Main_logo.png" alt="DeptzCS Logo">
+                <span class="logo-text">Nandha Engineering College</span>
+            </div>
+            
+    </header>
+
+    <div class="container">
+        <div class="page-title">
+            <h1>DeptzCS Giving Initiative</h1>
+            <p>Scan to donate and support</p>
+        </div>
+
+        <div class="charity-dashboard">
+            <!-- Main Charity Content -->
+            <div class="charity-content">
+                <!-- Scanner Section -->
+                <div class="scanner-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-qrcode"></i> Donation Scanner
+                    </h2>
+                    <div class="scanner-container">
+                        <div class="scanner-placeholder">
+                            <i class="fas fa-qrcode"></i>
+                            <p>Point camera at QR code to scan</p>
+                        </div>
+                        <div class="scanner-controls">
+                            <button class="scanner-btn secondary">
+                                <i class="fas fa-lightbulb"></i> Flash
+                            </button>
+                            <button class="scanner-btn primary" id="startScanner">
+                                <i class="fas fa-camera"></i> Scan Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Donation Settings -->
+                <div class="donation-settings">
+                    <h2 class="section-title">
+                        <i class="fas fa-cog"></i> Donation Settings
+                    </h2>
+
+                    <div class="setting-item">
+                        <label class="setting-label">Donation Type</label>
+                        <p class="setting-description">Select the type of cause you want to support</p>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle" id="donationTypeToggle">
+                                <span id="selectedDonationType">Education for Underprivileged</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu" id="donationTypeMenu">
+                                <div class="dropdown-item" onclick="selectDonationType('Education for Underprivileged')">Education for Underprivileged</div>
+                                <div class="dropdown-item" onclick="selectDonationType('Student Scholarship Fund')">Student Scholarship Fund</div>
+                                <div class="dropdown-item" onclick="selectDonationType('Natural Disaster')">Natural Disaster</div>
+                                <div class="dropdown-item" onclick="selectDonationType('Old Age Home')">Old Age Home</div>
+                                <div class="dropdown-item" onclick="selectDonationType('Emergency Student Aid')">Emergency Student Aid</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">Donation Amount</label>
+                        <p class="setting-description">Set your daily donation amount (₹1 to ₹100 per day)</p>
+                        <input type="range" class="range-slider" id="donationRange" min="1" max="100" value="10">
+                        <div class="range-values">
+                            <span>₹1</span>
+                            <span>₹50</span>
+                            <span>₹100</span>
+                        </div>
+                        <div class="selected-amount" style="text-align: center; margin-top: 1rem;">
+                            <span style="font-weight: 600; color: #00bfff;">Selected Amount: ₹</span>
+                            <span id="selectedAmount" style="font-weight: 700; font-size: 1.2rem;">10</span>
+                            <span style="font-size: 0.8rem; color: #ccc;"> per day</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">Donation Duration</label>
+                        <p class="setting-description">How long would you like to continue this donation?</p>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle" id="durationToggle">
+                                <span id="selectedDuration">1 Month</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu" id="durationMenu">
+                                <div class="dropdown-item" onclick="selectDuration('1 Week')">1 Week</div>
+                                <div class="dropdown-item" onclick="selectDuration('1 Month')">1 Month</div>
+                                <div class="dropdown-item" onclick="selectDuration('3 Months')">3 Months</div>
+                                <div class="dropdown-item" onclick="selectDuration('6 Months')">6 Months</div>
+                                <div class="dropdown-item" onclick="selectDuration('1 Year')">1 Year</div>
+                                <div class="dropdown-item" onclick="selectDuration('Until Cancelled')">Until Cancelled</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donation Sidebar -->
+            <div class="donation-sidebar">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i> Donation Summary
+                </h2>
+
+                <div class="donation-summary">
+                    <div class="donation-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalDonated">₹12,450</div>
+                            <div class="stat-label">Total Donated</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalDonors">1,243</div>
+                            <div class="stat-label">Donors</div>
+                        </div>
+                    </div>
+
+                    <div class="donation-goal">
+                        <div class="setting-label">Monthly Goal Progress</div>
+                        <div class="goal-progress">
+                            <div class="progress-bar" style="width: 65%;"></div>
+                        </div>
+                        <div class="goal-info">
+                            <span>₹<span class="goal-amount">32,500</span> raised</span>
+                            <span>Goal: ₹50,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-donations">
+                    <h3 style="font-size: 1rem; margin-bottom: 1rem; color: #00bfff;">
+                        <i class="fas fa-history"></i> Recent Donations
+                    </h3>
+                    <div style="max-height: 200px; overflow-y: auto;">
+                        <div style="display: flex; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid #00bfff;">
+                            <div style="width: 40px; height: 40px; background: rgba(0, 191, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                <i class="fas fa-user" style="color: #00bfff;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Anonymous</div>
+                                <div style="font-size: 0.8rem; color: #ccc;">₹100 • 2 hours ago</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid #00bfff;">
+                            <div style="width: 40px; height: 40px; background: rgba(0, 191, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                <i class="fas fa-user" style="color: #00bfff;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Lachu S</div>
+                                <div style="font-size: 0.8rem; color: #ccc;">₹500 • Yesterday</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid #00bfff;">
+                            <div style="width: 40px; height: 40px; background: rgba(0, 191, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                <i class="fas fa-user" style="color: #00bfff;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Alumni Group</div>
+                                <div style="font-size: 0.8rem; color: #ccc;">₹5,000 • 3 days ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <div class="modal-header">
+                <h3>Confirm Your Donation</h3>
+                <p>Thank you for supporting our cause</p>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <p>You're donating to:</p>
+                    <h4 id="modalDonationType" style="color: #00bfff; margin: 0.5rem 0 1rem;">Education for Underprivileged</h4>
+                </div>
+                <div class="payment-amount">
+                    ₹<span id="modalAmount">10</span>
+                    <small style="font-size: 1rem; display: block; color: #ccc;">per day</small>
+                </div>
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <p>Duration: <span id="modalDuration" style="font-weight: 600;">1 Month</span></p>
+                    <p style="font-size: 0.9rem; color: #ccc;">Total commitment: ₹<span id="modalTotal" style="font-weight: 600;">300</span></p>
+                </div>
+
+                <div class="payment-methods">
+                    <div class="payment-method active" id="gpayMethod">
+                        <i class="fab fa-google-pay"></i>
+                        <div class="payment-method-info">
+                            <div class="payment-method-name">Google Pay</div>
+                            <div class="payment-method-desc">Fast and secure payment</div>
+                        </div>
+                        <i class="fas fa-check-circle" style="color: #00bfff;"></i>
+                    </div>
+                    <div class="payment-method" id="razorpayMethod">
+                        <i class="fas fa-credit-card"></i>
+                        <div class="payment-method-info">
+                            <div class="payment-method-name">Credit/Debit Card</div>
+                            <div class="payment-method-desc">Visa, Mastercard, etc.</div>
+                        </div>
+                    </div>
+                    <div class="payment-method" id="upiMethod">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div class="payment-method-info">
+                            <div class="payment-method-name">UPI Payment</div>
+                            <div class="payment-method-desc">PhonePe, Paytm, etc.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="confirm-btn" id="confirmPayment">
+                    <i class="fas fa-rupee-sign"></i> Confirm & Pay
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const startScannerBtn = document.getElementById('startScanner');
+        const paymentModal = document.getElementById('paymentModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const confirmPaymentBtn = document.getElementById('confirmPayment');
+        const donationRange = document.getElementById('donationRange');
+        const selectedAmount = document.getElementById('selectedAmount');
+        const modalAmount = document.getElementById('modalAmount');
+        const modalTotal = document.getElementById('modalTotal');
+        const modalDonationType = document.getElementById('modalDonationType');
+        const modalDuration = document.getElementById('modalDuration');
+        
+        // Dropdown menus
+        const donationTypeToggle = document.getElementById('donationTypeToggle');
+        const donationTypeMenu = document.getElementById('donationTypeMenu');
+        const durationToggle = document.getElementById('durationToggle');
+        const durationMenu = document.getElementById('durationMenu');
+        
+        // Payment methods
+        const gpayMethod = document.getElementById('gpayMethod');
+        const razorpayMethod = document.getElementById('razorpayMethod');
+        const upiMethod = document.getElementById('upiMethod');
+        
+        // Initialize dropdown menus
+        donationTypeToggle.addEventListener('click', () => {
+            donationTypeMenu.classList.toggle('show');
+            durationMenu.classList.remove('show');
+        });
+        
+        durationToggle.addEventListener('click', () => {
+            durationMenu.classList.toggle('show');
+            donationTypeMenu.classList.remove('show');
+        });
+        
+        // Close dropdowns when clicking outside
+        window.addEventListener('click', (e) => {
+            if (!e.target.matches('.dropdown-toggle')) {
+                donationTypeMenu.classList.remove('show');
+                durationMenu.classList.remove('show');
+            }
+        });
+        
+        // Select donation type
+        function selectDonationType(type) {
+            document.getElementById('selectedDonationType').textContent = type;
+            modalDonationType.textContent = type;
+            donationTypeMenu.classList.remove('show');
+        }
+        
+        // Select duration
+        function selectDuration(duration) {
+            document.getElementById('selectedDuration').textContent = duration;
+            modalDuration.textContent = duration;
+            durationMenu.classList.remove('show');
+            
+            // Calculate total amount based on duration
+            updateTotalAmount();
+        }
+        
+        // Update amount when slider changes
+        donationRange.addEventListener('input', () => {
+            selectedAmount.textContent = donationRange.value;
+            modalAmount.textContent = donationRange.value;
+            updateTotalAmount();
+        });
+        
+        // Calculate total amount based on duration
+        function updateTotalAmount() {
+            const amount = parseInt(donationRange.value);
+            const duration = document.getElementById('selectedDuration').textContent;
+            
+            let days = 30; // Default to 1 month
+            
+            if (duration === '1 Week') days = 7;
+            else if (duration === '1 Month') days = 30;
+            else if (duration === '3 Months') days = 90;
+            else if (duration === '6 Months') days = 180;
+            else if (duration === '1 Year') days = 365;
+            else if (duration === 'Until Cancelled') days = 30; // Default to 1 month for recurring
+            
+            const total = amount * days;
+            modalTotal.textContent = total.toLocaleString();
+        }
+        
+        // Payment method selection
+        gpayMethod.addEventListener('click', () => {
+            gpayMethod.classList.add('active');
+            razorpayMethod.classList.remove('active');
+            upiMethod.classList.remove('active');
+        });
+        
+        razorpayMethod.addEventListener('click', () => {
+            razorpayMethod.classList.add('active');
+            gpayMethod.classList.remove('active');
+            upiMethod.classList.remove('active');
+        });
+        
+        upiMethod.addEventListener('click', () => {
+            upiMethod.classList.add('active');
+            gpayMethod.classList.remove('active');
+            razorpayMethod.classList.remove('active');
+        });
+        
+        // Scanner button click
+        startScannerBtn.addEventListener('click', () => {
+            // In a real app, this would activate the camera for QR scanning
+            // For demo, we'll simulate a successful scan after 1 second
+            startScannerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
+            
+            setTimeout(() => {
+                startScannerBtn.innerHTML = '<i class="fas fa-camera"></i> Scan Now';
+                paymentModal.classList.add('show');
+            }, 1000);
+        });
+        
+        // Close modal
+        closeModalBtn.addEventListener('click', () => {
+            paymentModal.classList.remove('show');
+        });
+        
+        // Confirm payment
+        confirmPaymentBtn.addEventListener('click', () => {
+            const amount = parseInt(donationRange.value);
+            const duration = document.getElementById('selectedDuration').textContent;
+            const donationType = document.getElementById('selectedDonationType').textContent;
+            
+            // Determine payment method
+            let paymentMethod = '';
+            if (gpayMethod.classList.contains('active')) paymentMethod = 'Google Pay';
+            else if (razorpayMethod.classList.contains('active')) paymentMethod = 'Credit/Debit Card';
+            else if (upiMethod.classList.contains('active')) paymentMethod = 'UPI';
+            
+            // Show processing
+            confirmPaymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                // In a real app, this would integrate with Razorpay/GPay API
+                processPayment(amount, duration, donationType, paymentMethod);
+            }, 1500);
+        });
+        
+        // Process payment (simulated)
+        function processPayment(amount, duration, donationType, paymentMethod) {
+            // For demo purposes, we'll just show an alert
+            paymentModal.classList.remove('show');
+            
+            // Reset payment button
+            confirmPaymentBtn.innerHTML = '<i class="fas fa-rupee-sign"></i> Confirm & Pay';
+            
+            // Show success message
+            alert(`Thank you! Your donation of ₹${amount} per day for ${duration} to "${donationType}" has been successfully processed via ${paymentMethod}.`);
+            
+            // Update donation stats (demo only)
+            const totalDonated = document.getElementById('totalDonated');
+            const currentTotal = parseInt(totalDonated.textContent.replace(/[^0-9]/g, ''));
+            totalDonated.textContent = `₹${(currentTotal + amount * 30).toLocaleString()}`;
+            
+            const totalDonors = document.getElementById('totalDonors');
+            const currentDonors = parseInt(totalDonors.textContent.replace(/[^0-9]/g, ''));
+            totalDonors.textContent = (currentDonors + 1).toLocaleString();
+        }
+        
+        // Initialize with default values
+        updateTotalAmount();
+    </script>
+</body>
+</html>

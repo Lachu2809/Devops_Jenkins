@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject-wise Attendance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Audiowide&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #0e0e0e;
+            color: #fff;
+        }
+
+        header {
+            background-color: #000;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #00bfff;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #151515;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            text-align: center;
+            color: #00bfff;
+            font-family: 'Audiowide', sans-serif;
+        }
+
+        .attendance-chart {
+            margin-top: 20px;
+        }
+
+        .attendance-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .subject {
+            flex: 1;
+            text-align: left;
+            padding-right: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .bar {
+            flex: 3;
+            background-color: #1f1f1f;
+            border-radius: 25px;
+            overflow: hidden;
+            height: 30px;
+            position: relative;
+        }
+
+        .bar-inner {
+            height: 100%;
+            border-radius: 25px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .bar-inner.green { background-color: #16bd00; }  /* 80% and above */
+        .bar-inner.orange { background-color: #ff9100; }  /* 75% - 79.9% */
+        .bar-inner.red { background-color: #f80f0f; }     /* Below 75% */
+
+        .attendance-percentage {
+            font-size: 1rem;
+            padding-left: 10px;
+            font-weight: bold;
+            color: #00bfff;
+        }
+
+        .overall-percentage {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #16bd00;
+            margin-top: 20px;
+        }
+
+        .back-button {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            background: #00bfff;
+            border: none;
+            border-radius: 25px;
+            color: #000;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: #007acc;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        DeptzCS - Subject-wise Attendance
+    </header>
+
+    <div class="container">
+        <h2>2025-2026</h2>
+
+        <div class="attendance-chart" id="attendance-chart">
+            <!-- Attendance data will be dynamically added here -->
+        </div>
+
+        <div class="overall-percentage" id="overall-percentage">
+            <!-- Overall percentage will be displayed here -->
+        </div>
+
+        <a href="home.html" class="back-button">Back to Home</a>
+    </div>
+
+    <script>
+        // Attendance Data with your provided subject names
+        const attendanceData = [
+            { subject: "Artificial Intelligence and Machine Learning", attended: 17, total: 20 },  // 85% (Green)
+            { subject: "Theory of Computation", attended: 16, total: 20 },    // 80% (Green)
+            { subject: "Database Management System", attended: 13, total: 19 },    // 68% (Red)
+            { subject: "Advanced Java Programming", attended: 15, total: 19 },    // 77% (Orange)
+            { subject: "Foundation of Data Science", attended: 14, total: 20 },   // 70% (Red)
+            { subject: "Environmental Science and Engineering", attended: 19, total: 22 },// 86% (Green)
+            { subject: "Database Management System Lab", attended: 14, total: 18 },// 77% (Orange)
+            { subject: "Advanced Java Programming Lab", attended: 12, total: 16 }, // 75% (Orange)
+            { subject: "Foundation of Data Science Lab", attended: 12, total: 16 } // 75% (Orange)
+        ];
+
+        function setAttendance() {
+            const attendanceChart = document.getElementById("attendance-chart");
+            let totalAttended = 0;
+            let totalClasses = 0;
+
+            attendanceData.forEach((data) => {
+                const percentage = (data.attended / data.total) * 100;
+                totalAttended += data.attended;
+                totalClasses += data.total;
+
+                // Create row container
+                const row = document.createElement("div");
+                row.classList.add("attendance-row");
+
+                // Create subject name
+                const subjectDiv = document.createElement("div");
+                subjectDiv.classList.add("subject");
+                subjectDiv.textContent = data.subject;
+
+                // Create bar container
+                const barContainer = document.createElement("div");
+                barContainer.classList.add("bar");
+
+                // Create bar inner element
+                const barInner = document.createElement("div");
+                barInner.classList.add("bar-inner");
+                barInner.style.width = percentage + "%";
+
+                // Apply color based on percentage
+                if (percentage >= 80) {
+                    barInner.classList.add("green");
+                } else if (percentage >= 75) {
+                    barInner.classList.add("orange");
+                } else {
+                    barInner.classList.add("red");
+                }
+
+                // Create percentage text
+                const percentageDiv = document.createElement("div");
+                percentageDiv.classList.add("attendance-percentage");
+                percentageDiv.textContent = data.attended + "/" + data.total + " (" + percentage.toFixed(1) + "%)";
+
+                // Append elements
+                barContainer.appendChild(barInner);
+                row.appendChild(subjectDiv);
+                row.appendChild(barContainer);
+                row.appendChild(percentageDiv);
+                attendanceChart.appendChild(row);
+            });
+
+            // Calculate overall percentage
+            const overallPercentage = (totalAttended / totalClasses) * 100;
+            document.getElementById("overall-percentage").textContent = "Overall Attendance: " + overallPercentage.toFixed(1) + "%";
+        }
+
+        // Set attendance on page load
+        window.onload = setAttendance;
+    </script>
+</body>
+</html>

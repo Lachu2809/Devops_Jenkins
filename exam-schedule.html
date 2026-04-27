@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Exam Schedule - DeptzCS</title>
+<link rel="icon" href="Main_logo.png" type="image/x-icon" />
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet" />
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #010a13, #0e0e0e);
+        color: #fff;
+        font-family: 'Audiowide', sans-serif;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    body.light-mode {
+        background: linear-gradient(135deg, #f0f0f0, #ffffff);
+        color: #000;
+    }
+
+    header {
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        width: 100%;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    body.light-mode header {
+        background-color: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+        margin: 40px auto;
+        width: 80%;
+    }
+
+    .back-btn, .download-btn, #themeToggle {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px 20px;
+        background: #00bfff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    body.light-mode .back-btn, body.light-mode .download-btn, body.light-mode #themeToggle {
+        background: #008fcc;
+        color: #fff;
+    }
+
+    .back-btn:hover, .download-btn:hover, #themeToggle:hover {
+        background: #008fcc;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #fff;
+        padding: 12px;
+        text-align: center;
+    }
+
+    body.light-mode th, body.light-mode td {
+        border: 1px solid #000;
+    }
+
+    th {
+        background-color: #00bfff;
+        color: black;
+    }
+
+    body.light-mode th {
+        background-color: #008fcc;
+        color: #fff;
+    }
+
+    /* Removed progress bar styles */
+
+    /* Removed Timer styles */
+
+    /* Removed Resources styles */
+
+    #calendar {
+        margin: 20px auto;
+        max-width: 900px;
+    }
+
+    @media print {
+        header, .back-btn, .download-btn, #search, #examTypeFilter, #themeToggle, #calendar {
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #ddd;
+            color: #000;
+        }
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Exam Schedule</h1>
+    <button id="themeToggle" onclick="toggleTheme()">Toggle Light Mode</button>
+</header>
+
+<div class="container">
+   
+
+    <!-- Dropdown to filter exams by type -->
+    <select id="examTypeFilter" onchange="filterTable()">
+        <option value="all">All Exams</option>
+        <option value="Unit Test">Unit Test</option>
+        <option value="CAT 1">CAT 1</option>
+        <option value="CAT 2">CAT 2</option>
+        <option value="Semester Practical">Semester Practical</option>
+        <option value="Semester Theory">Semester Theory</option>
+    </select>
+
+    <!-- Search bar -->
+    <input type="text" id="search" placeholder="Search Subject or Date..." onkeyup="searchTable()" />
+
+    <!-- Exam Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Exam Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Duration</th>
+                <th>Hall No.</th>
+                <th>Exam Type</th>
+            </tr>
+        </thead>
+        <tbody id="examTable">
+            <!-- March - Unit Test -->
+            <tr>
+                <td>Artificial Intelligence and Machine Learning (AIML)</td>
+                <td>Unit Test</td>
+                <td id="examDate1">2025-03-10</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 3</td>
+                <td>Unit Test</td>
+            </tr>
+            <tr>
+                <td>Theory of Computation (TOC)</td>
+                <td>Unit Test</td>
+                <td id="examDate2">2025-03-12</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 4</td>
+                <td>Unit Test</td>
+            </tr>
+            <tr>
+                <td>Database Management System (DBMS)</td>
+                <td>Unit Test</td>
+                <td id="examDate3">2025-03-14</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 7</td>
+                <td>Unit Test</td>
+            </tr>
+            <tr>
+                <td>Advanced Java Programming (AJP)</td>
+                <td>Unit Test</td>
+                <td id="examDate4">2025-03-16</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 2</td>
+                <td>Unit Test</td>
+            </tr>
+            <tr>
+                <td>Foundations of Data Science (FDS)</td>
+                <td>Unit Test</td>
+                <td id="examDate5">2025-03-18</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 1</td>
+                <td>Unit Test</td>
+            </tr>
+            <tr>
+                <td>Environmental Science (EVS)</td>
+                <td>Unit Test</td>
+                <td id="examDate6">2025-03-20</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 5</td>
+                <td>Unit Test</td>
+            </tr>
+
+            <!-- March - CAT 1 -->
+            <tr>
+                <td>Artificial Intelligence and Machine Learning (AIML)</td>
+                <td>CAT 1</td>
+                <td id="examDate7">2025-03-22</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 3</td>
+                <td>CAT 1</td>
+            </tr>
+            <tr>
+                <td>Theory of Computation (TOC)</td>
+                <td>CAT 1</td>
+                <td id="examDate8">2025-03-24</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 4</td>
+                <td>CAT 1</td>
+            </tr>
+            <tr>
+                <td>Database Management System (DBMS)</td>
+                <td>CAT 1</td>
+                <td id="examDate9">2025-03-26</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 7</td>
+                <td>CAT 1</td>
+            </tr>
+            <tr>
+                <td>Advanced Java Programming (AJP)</td>
+                <td>CAT 1</td>
+                <td id="examDate10">2025-03-28</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 2</td>
+                <td>CAT 1</td>
+            </tr>
+            <tr>
+                <td>Foundations of Data Science (FDS)</td>
+                <td>CAT 1</td>
+                <td id="examDate11">2025-03-30</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 1</td>
+                <td>CAT 1</td>
+            </tr>
+            <tr>
+                <td>Environmental Science (EVS)</td>
+                <td>CAT 1</td>
+                <td id="examDate12">2025-04-01</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 5</td>
+                <td>CAT 1</td>
+            </tr>
+
+            <!-- April - CAT 2 -->
+            <tr>
+                <td>Artificial Intelligence and Machine Learning (AIML)</td>
+                <td>CAT 2</td>
+                <td id="examDate13">2025-04-05</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 3</td>
+                <td>CAT 2</td>
+            </tr>
+            <tr>
+                <td>Theory of Computation (TOC)</td>
+                <td>CAT 2</td>
+                <td id="examDate14">2025-04-07</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 4</td>
+                <td>CAT 2</td>
+            </tr>
+            <tr>
+                <td>Database Management System (DBMS)</td>
+                <td>CAT 2</td>
+                <td id="examDate15">2025-04-09</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 7</td>
+                <td>CAT 2</td>
+            </tr>
+            <tr>
+                <td>Advanced Java Programming (AJP)</td>
+                <td>CAT 2</td>
+                <td id="examDate16">2025-04-11</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 2</td>
+                <td>CAT 2</td>
+            </tr>
+            <tr>
+                <td>Foundations of Data Science (FDS)</td>
+                <td>CAT 2</td>
+                <td id="examDate17">2025-04-13</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 1</td>
+                <td>CAT 2</td>
+            </tr>
+            <tr>
+                <td>Environmental Science (EVS)</td>
+                <td>CAT 2</td>
+                <td id="examDate18">2025-04-15</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 5</td>
+                <td>CAT 2</td>
+            </tr>
+
+            <!-- May - Semester Practical Lab (Only 3 Subjects) -->
+            <tr>
+                <td>Advanced Java Programming (AJP)</td>
+                <td>Semester Practical Lab</td>
+                <td id="examDate19">2025-05-10</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Lab 1</td>
+                <td>Semester Practical</td>
+            </tr>
+            <tr>
+                <td>Database Management System (DBMS)</td>
+                <td>Semester Practical Lab</td>
+                <td id="examDate20">2025-05-12</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Lab 2</td>
+                <td>Semester Practical</td>
+            </tr>
+            <tr>
+                <td>Foundations of Data Science (FDS)</td>
+                <td>Semester Practical Lab</td>
+                <td id="examDate21">2025-05-14</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Lab 3</td>
+                <td>Semester Practical</td>
+            </tr>
+
+            <!-- June - Semester Theory -->
+            <tr>
+                <td>Artificial Intelligence and Machine Learning (AIML)</td>
+                <td>Semester Theory</td>
+                <td id="examDate22">2025-06-10</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 3</td>
+                <td>Semester Theory</td>
+            </tr>
+            <tr>
+                <td>Theory of Computation (TOC)</td>
+                <td>Semester Theory</td>
+                <td id="examDate23">2025-06-12</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 4</td>
+                <td>Semester Theory</td>
+            </tr>
+            <tr>
+                <td>Database Management System (DBMS)</td>
+                <td>Semester Theory</td>
+                <td id="examDate24">2025-06-14</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 7</td>
+                <td>Semester Theory</td>
+            </tr>
+            <tr>
+                <td>Advanced Java Programming (AJP)</td>
+                <td>Semester Theory</td>
+                <td id="examDate25">2025-06-16</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 2</td>
+                <td>Semester Theory</td>
+            </tr>
+            <tr>
+                <td>Foundations of Data Science (FDS)</td>
+                <td>Semester Theory</td>
+                <td id="examDate26">2025-06-18</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 1</td>
+                <td>Semester Theory</td>
+            </tr>
+            <tr>
+                <td>Environmental Science (EVS)</td>
+                <td>Semester Theory</td>
+                <td id="examDate27">2025-06-20</td>
+                <td>10:00 AM</td>
+                <td>3 Hours</td>
+                <td>Block 5</td>
+                <td>Semester Theory</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="exam_schedule.pdf" class="download-btn" download>Download Schedule PDF</a>
+
+    <div id="calendar"></div>
+
+    <br /><br />
+    <a href="exam.html" class="back-btn">Back to Home</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+<script>
+    // Search Function
+    function searchTable() {
+        let input = document.getElementById("search").value.toUpperCase();
+        let table = document.getElementById("examTable");
+        let rows = table.getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+            let rowText = rows[i].innerText.toUpperCase();
+            rows[i].style.display = rowText.includes(input) ? "" : "none";
+        }
+    }
+
+    // Filter Function
+    function filterTable() {
+        let filter = document.getElementById("examTypeFilter").value.toUpperCase();
+        let table = document.getElementById("examTable");
+        let rows = table.getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+            let examTypeCell = rows[i].getElementsByTagName("td")[6]; // Exam Type
+            if (examTypeCell) {
+                let text = examTypeCell.textContent || examTypeCell.innerText;
+                if (filter === "ALL" || text.toUpperCase().includes(filter)) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    // Countdown Timer for first exam
+    function countdown() {
+        let examDate = new Date("2025-03-10 10:00:00").getTime();
+        let timer = setInterval(function() {
+            let now = new Date().getTime();
+            let distance = examDate - now;
+            if (distance < 0) {
+                clearInterval(timer);
+                document.getElementById("countdown").innerHTML = "Exam Started!";
+            } else {
+                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distance % 1000 * 60) / 1000);
+                document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+        }, 1000);
+    }
+
+    // Initialize FullCalendar
+    document.addEventListener('DOMContentLoaded', function() {
+        let calendarEl = document.getElementById('calendar');
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: [
+                { title: 'AIML - Unit Test', start: '2025-03-10', color: '#00bfff' },
+                { title: 'TOC - Unit Test', start: '2025-03-12', color: '#00bfff' },
+                { title: 'DBMS - Unit Test', start: '2025-03-14', color: '#00bfff' },
+                { title: 'AJP - Unit Test', start: '2025-03-16', color: '#00bfff' },
+                { title: 'FDS - Unit Test', start: '2025-03-18', color: '#00bfff' },
+                { title: 'EVS - Unit Test', start: '2025-03-20', color: '#00bfff' },
+                { title: 'AIML - CAT 1', start: '2025-03-22', color: '#ffcc00' },
+                { title: 'TOC - CAT 1', start: '2025-03-24', color: '#ffcc00' },
+                { title: 'DBMS - CAT 1', start: '2025-03-26', color: '#ffcc00' },
+                { title: 'AJP - CAT 1', start: '2025-03-28', color: '#ffcc00' },
+                { title: 'FDS - CAT 1', start: '2025-03-30', color: '#ffcc00' },
+                { title: 'EVS - CAT 1', start: '2025-04-01', color: '#ffcc00' },
+                { title: 'AIML - CAT 2', start: '2025-04-05', color: '#ff6666' },
+                { title: 'TOC - CAT 2', start: '2025-04-07', color: '#ff6666' },
+                { title: 'DBMS - CAT 2', start: '2025-04-09', color: '#ff6666' },
+                { title: 'AJP - CAT 2', start: '2025-04-11', color: '#ff6666' },
+                { title: 'FDS - CAT 2', start: '2025-04-13', color: '#ff6666' },
+                { title: 'EVS - CAT 2', start: '2025-04-15', color: '#ff6666' },
+                { title: 'AJP - Semester Practical', start: '2025-05-10', color: '#66ff66' },
+                { title: 'DBMS - Semester Practical', start: '2025-05-12', color: '#66ff66' },
+                { title: 'FDS - Semester Practical', start: '2025-05-14', color: '#66ff66' },
+                { title: 'AIML - Semester Theory', start: '2025-06-10', color: '#6666ff' },
+                { title: 'TOC - Semester Theory', start: '2025-06-12', color: '#6666ff' },
+                { title: 'DBMS - Semester Theory', start: '2025-06-14', color: '#6666ff' },
+                { title: 'AJP - Semester Theory', start: '2025-06-16', color: '#6666ff' },
+                { title: 'FDS - Semester Theory', start: '2025-06-18', color: '#6666ff' },
+                { title: 'EVS - Semester Theory', start: '2025-06-20', color: '#6666ff' }
+            ]
+        });
+        calendar.render();
+    });
+
+    // Dark/Light Mode Toggle
+    function toggleTheme() {
+        let body = document.body;
+        body.classList.toggle("light-mode");
+        if (body.classList.contains("light-mode")) {
+            localStorage.setItem("theme", "light");
+            document.getElementById("themeToggle").innerText = "Toggle Dark Mode";
+        } else {
+            localStorage.setItem("theme", "dark");
+            document.getElementById("themeToggle").innerText = "Toggle Light Mode";
+        }
+    }
+
+    // Check saved theme preference
+    document.addEventListener("DOMContentLoaded", function() {
+        let savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "light") {
+            document.body.classList.add("light-mode");
+            document.getElementById("themeToggle").innerText = "Toggle Dark Mode";
+        }
+    });
+
+    // Initialize countdown
+    countdown();
+</script>
+
+</body>
+</html>

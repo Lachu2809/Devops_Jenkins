@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - DeptzCS</title>
+    <link rel="icon" href="Main_logo.jpg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Your Original CSS Theme */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #0e0e0e;
+            font-family: 'Audiowide', sans-serif;
+            color: #fff;
+        }
+        .profile-photo{
+            height: 50px;
+            width: 40px;
+        }
+        header {
+            background-color: #000;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #00bfff;
+        }
+        header img {
+            height: 50px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #00bfff;
+            margin-bottom: 30px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .button {
+            background: #111;
+            padding: 20px;
+            border: 2px solid #00bfff;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .button i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .button:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 191, 255, 0.3);
+            transition: 0.5s;
+            transform: scaleX(0);
+            transform-origin: right;
+            z-index: -1;
+        }
+        .button:hover:before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        .button:hover {
+            border-color: #007acc;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #fff;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        /* New ID Card Styles */
+        .id-card {
+            background: linear-gradient(135deg, #1a1a1a, #0e0e0e);
+            border-radius: 20px;
+            padding: 25px;
+            color: #fff;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 191, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #00bfff;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        .id-card:before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 191, 255, 0.2), transparent 70%);
+            transform: rotate(45deg);
+            z-index: 0;
+            animation: rotateBackground 10s linear infinite;
+        }
+
+        @keyframes rotateBackground {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .id-card-header {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #00bfff;
+            box-shadow: 0 4px 15px rgba(0, 191, 255, 0.5);
+            margin-bottom: 15px;
+        }
+
+        .id-card-header h2 {
+            font-size: 1.8rem;
+            margin: 10px 0;
+            color: #00bfff;
+            text-shadow: 0 2px 5px rgba(0, 191, 255, 0.5);
+        }
+
+        .id-card-header p {
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        .id-card-body {
+            position: relative;
+            z-index: 1;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+
+        .id-card-body p {
+            margin: 10px 0;
+            color: #fff;
+        }
+
+        /* Hover Effect */
+        .id-card:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+            box-shadow: 0 12px 40px rgba(0, 191, 255, 0.5);
+        }
+
+        /* Assignment Modal Styles */
+        .assignment-questions {
+            text-align: left;
+            background: linear-gradient(135deg, #007acc, #00bfff);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        .assignment-questions h3 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .assignment-questions label {
+            display: block;
+            margin-top: 15px;
+            color: #fff;
+        }
+        .assignment-questions select,
+        .assignment-questions input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: #111;
+            border: 2px solid #00bfff;
+            border-radius: 5px;
+            color: #fff;
+            font-family: 'Audiowide', sans-serif;
+        }
+        .assignment-questions select:focus,
+        .assignment-questions input[type="file"]:focus {
+            border-color: #007acc;
+            outline: none;
+        }
+        .assignment-questions button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background: #00bfff;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .assignment-questions button:hover {
+            background: #007acc;
+        }
+
+        /* Task MCQ Styles */
+        .task-mcq {
+            text-align: left;
+            background: linear-gradient(135deg, #007acc, #00bfff);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        .task-mcq h3 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .task-mcq .question {
+            margin-bottom: 20px;
+        }
+        .task-mcq .question p {
+            margin: 5px 0;
+            color: #fff;
+        }
+        .task-mcq .options {
+            margin-left: 20px;
+        }
+        .task-mcq .options label {
+            display: block;
+            margin: 5px 0;
+            color: #fff;
+        }
+        .task-mcq button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background: #00bfff;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .task-mcq button:hover {
+            background: #007acc;
+        }
+
+       
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html">
+            <img src="Main_logo.png" alt="DeptzCS Logo">
+        </a>
+    </header>
+    <div class="container">
+        <h1>Welcome to DeptzCS</h1>
+        <div class="grid">
+            <!-- Existing Buttons -->
+            <div class="button" onclick="location.href='exam.html'">
+                <i class="fas fa-file-alt"></i>
+                <span>Exam</span>
+            </div>
+            <div class="button" onclick="location.href='timetable.html'">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Time Table</span>
+            </div>
+            <div class="button" onclick="location.href='attendance.html'">
+                <i class="fas fa-user-check"></i>
+                <span>Attendance</span>
+            </div>
+            <div class="button" onclick="location.href='blog.html'">
+                <i class="fas fa-blog"></i>
+                <span>Blogs</span>
+            </div>
+
+            <!-- Assignments Button -->
+            <div class="button" onclick="showAssignmentModal()">
+                <i class="fas fa-tasks"></i>
+                <span>Assignments</span>
+            </div>
+
+            <!-- Task Button -->
+            <div class="button" onclick="location.href='Task.html'">
+                <i class="fas fa-list"></i>
+                <span>Task</span>
+            </div>
+
+            <!-- Identity Card Button -->
+            <div class="button" onclick="showIDCard()">
+                <i class="fas fa-id-card"></i>
+                <span>Identity Card</span>
+            </div>
+
+             <!-- Charity Button -->
+            <div class="button" onclick="location.href='Charity.html'">
+                <i class="fas fa-hands-helping"></i>
+                <span>Charity</span>
+            </div>
+
+            
+
+    <!-- ID Card Modal -->
+    <div id="idCardModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeIDCard()">&times;</span>
+            <div class="id-card">
+                <div class="id-card-header">
+                    <img src="identity photo.jpg" alt="User Photo" class="profile-photo">
+                    <h2>Lakshminarayanan S</h2>
+                    <p>Department: CSE </p>
+                </div>
+                <div class="id-card-body">
+                    <p>Roll No: 23CS093</p>
+                    <p>Year: Second Year</p>
+                    <p>Blood Group: O+</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assignment Modal -->
+    <div id="assignmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAssignmentModal()">&times;</span>
+            <div class="assignment-questions">
+                <h3>Assignments</h3>
+                <form id="assignmentForm">
+                    <label>Select Subject:</label>
+                    <select id="subject" name="subject" onchange="showAssignmentQuestions()">
+                        <option value="">-- Select Subject --</option>
+                        <option value="AI & ML">AI & ML</option>
+                        <option value="TOC">TOC</option>
+                        <option value="DBMS">DBMS</option>
+                        <option value="AJP">AJP</option>
+                        <option value="FDS">FDS</option>
+                        <option value="EVS">EVS</option>
+                    </select>
+
+                    <div id="assignmentQuestions" class="questions"></div>
+
+                    <label>Upload Assignment:</label>
+                    <input type="file" name="assignment" required>
+
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+    
+    <!-- JavaScript for Modals, Assignment Questions, and Task MCQ -->
+    <script>
+        // ID Card Modal
+        function showIDCard() {
+            document.getElementById("idCardModal").style.display = "flex";
+        }
+
+        function closeIDCard() {
+            document.getElementById("idCardModal").style.display = "none";
+        }
+
+        // Assignment Modal
+        function showAssignmentModal() {
+            document.getElementById("assignmentModal").style.display = "flex";
+        }
+
+        function closeAssignmentModal() {
+            document.getElementById("assignmentModal").style.display = "none";
+        }
+
+        // Task Modal
+        function showTaskModal() {
+            document.getElementById("taskModal").style.display = "flex";
+           
+        }
+
+        function closeTaskModal() {
+            document.getElementById("taskModal").style.display = "none";
+        }
+
+        
+        // Show Assignment Questions
+        function showAssignmentQuestions() {
+            const subject = document.getElementById("subject").value;
+            const questionsDiv = document.getElementById("assignmentQuestions");
+
+            const questions = {
+                "AI & ML": [
+                    "1. What are the types of machine learning algorithms?",
+                    "2. Explain supervised vs. unsupervised learning.",
+                    "3. What is deep learning, and how does it differ from traditional AI?"
+                ],
+                "TOC": [
+                    "1. What is a Turing machine?",
+                    "2. Explain the concept of decidability.",
+                    "3. What is the difference between P and NP problems?"
+                ],
+                "DBMS": [
+                    "1. What is normalization in DBMS?",
+                    "2. Explain ACID properties in DBMS.",
+                    "3. What are the different types of joins in SQL?"
+                ],
+                "AJP": [
+                    "1. What is multithreading in Java?",
+                    "2. Explain the concept of servlets in Java.",
+                    "3. What is JDBC, and how does it work?"
+                ],
+                "FDS": [
+                    "1. What are the key steps in a data science project?",
+                    "2. Explain the importance of data preprocessing.",
+                    "3. What is machine learning, and how does it relate to data science?"
+                ],
+                "EVS": [
+                    "1. What are the major environmental issues?",
+                    "2. Explain the concept of sustainable development.",
+                    "3. What is the role of renewable energy in environmental conservation?"
+                ]
+            };
+
+            if (subject in questions) {
+                questionsDiv.innerHTML = `<label>Assignment Questions:</label><ul>` +
+                    questions[subject].map(q => `<li>${q}</li>`).join('') + `</ul>`;
+                questionsDiv.style.display = "block";
+            } else {
+                questionsDiv.style.display = "none";
+            }
+        }
+
+        // Load MCQ Questions
+        function loadMCQQuestions() {
+            const mcqQuestions = [
+                {
+                    subject: "AI & ML",
+                    questions: [
+                        {
+                            question: "1. What is the main goal of machine learning?",
+                            options: ["A. To mimic human behavior", "B. To make predictions based on data", "C. To automate tasks", "D. To create algorithms"],
+                            answer: "B"
+                        },
+                        {
+                            question: "2. Which algorithm is used for classification?",
+                            options: ["A. Linear Regression", "B. K-Means", "C. Decision Tree", "D. PCA"],
+                            answer: "C"
+                        },
+                        // Add 8 more questions for AI & ML
+                    ]
+                },
+                {
+                    subject: "TOC",
+                    questions: [
+                        {
+                            question: "1. What is a Turing machine?",
+                            options: ["A. A theoretical computing device", "B. A type of computer", "C. A programming language", "D. A data structure"],
+                            answer: "A"
+                        },
+                        {
+                            question: "2. What is the halting problem?",
+                            options: ["A. A problem in calculus", "B. A problem in number theory", "C. A problem in computability theory", "D. A problem in graph theory"],
+                            answer: "C"
+                        },
+                        // Add 8 more questions for TOC
+                    ]
+                },
+                {
+                    subject: "DBMS",
+                    questions: [
+                        {
+                            question: "1. What is normalization?",
+                            options: ["A. A process of organizing data in a database", "B. A type of database", "C. A programming language", "D. A data structure"],
+                            answer: "A"
+                        },
+                        {
+                            question: "2. What is a primary key?",
+                            options: ["A. A unique identifier for a record", "B. A type of query", "C. A type of join", "D. A type of index"],
+                            answer: "A"
+                        },
+                        // Add 8 more questions for DBMS
+                    ]
+                },
+                {
+                    subject: "AJP",
+                    questions: [
+                        {
+                            question: "1. What is multithreading?",
+                            options: ["A. A process of running multiple threads simultaneously", "B. A type of database", "C. A programming language", "D. A data structure"],
+                            answer: "A"
+                        },
+                        {
+                            question: "2. What is a servlet?",
+                            options: ["A. A Java class used to extend the capabilities of servers", "B. A type of database", "C. A programming language", "D. A data structure"],
+                            answer: "A"
+                        },
+                        // Add 8 more questions for AJP
+                    ]
+                },
+                {
+                    subject: "FDS",
+                    questions: [
+                        {
+                            question: "1. What is data preprocessing?",
+                            options: ["A. A process of cleaning and transforming raw data", "B. A type of database", "C. A programming language", "D. A data structure"],
+                            answer: "A"
+                        },
+                        {
+                            question: "2. What is machine learning?",
+                            options: ["A. A method of data analysis that automates analytical model building", "B. A type of database", "C. A programming language", "D. A data structure"],
+                            answer: "A"
+                        },
+                        // Add 8 more questions for FDS
+                    ]
+                },
+                {
+                    subject: "EVS",
+                    questions: [
+                        {
+                            question: "1. What is sustainable development?",
+                            options: ["A. Development that meets the needs of the present without compromising future generations", "B. A type of database", "C. A programming language", "D. A data structure"],
+                            answer: "A"
+                        },
+                        {
+                            question: "2. What is renewable energy?",
+                            options: ["A. Energy from sources that are naturally replenished", "B. A type of database", "C. A programming language", "D. A data structure"],
+                            answer: "A"
+                        },
+                        // Add 8 more questions for EVS
+                    ]
+                }
+            ];
+
+            let mcqHTML = "";
+            mcqQuestions.forEach(subject => {
+                mcqHTML += `<h4>${subject.subject}</h4>`;
+                subject.questions.forEach((q, index) => {
+                    mcqHTML += `
+                        <div class="question">
+                            <p>${q.question}</p>
+                            <div class="options">
+                                ${q.options.map(opt => `<label><input type="radio" name="q${index}" value="${opt[0]}"> ${opt}</label>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+            document.getElementById("mcqQuestions").innerHTML = mcqHTML;
+        }
+
+        // Submit MCQ Answers
+        function submitMCQ() {
+            alert("MCQ Answers Submitted Successfully!");
+            closeTaskModal();
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const idCardModal = document.getElementById("idCardModal");
+            const assignmentModal = document.getElementById("assignmentModal");
+            const taskModal = document.getElementById("taskModal");
+            
+
+            if (event.target === idCardModal) {
+                idCardModal.style.display = "none";
+            }
+            if (event.target === assignmentModal) {
+                assignmentModal.style.display = "none";
+            }
+            if (event.target === taskModal) {
+                taskModal.style.display = "none";
+            }
+            
+        }
+
+        // Handle Assignment Form Submission
+        document.getElementById("assignmentForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Assignment submitted successfully!");
+            closeAssignmentModal();
+        });
+    </script>
+</body>
+</html>

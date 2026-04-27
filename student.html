@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="logo2.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login - DeptzCS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #010a13, #0e0e0e);
+            font-family: 'Audiowide', sans-serif;
+            color: #fff;
+        }
+        .login-logo {
+            width: 120px; /* Increased size */
+            height: 120px;
+            
+        }
+
+        .login-container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 15px;
+            width: 320px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        .login-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #00bfff;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #0056b3;
+            border-radius: 25px;
+            background: #f4f4f4;
+            font-size: 1rem;
+            outline: none;
+            color: #000;
+            transition: border 0.3s ease;
+        }
+
+        .login-input:focus {
+            border-color: #00bfff;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #00bfff;
+            border: none;
+            border-radius: 25px;
+            color: #000;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-button:hover {
+            background-color: #007acc;
+        }
+
+        .show-password-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            justify-content: start;
+        }
+
+        .show-password-container label {
+            font-size: 0.9rem;
+            color: #00bfff;
+            margin-left: 5px;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #00bfff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <img src="Main_logo.png" alt="Logo" class="login-logo" >
+        <div class="login-title">Student Login</div>
+    
+        <form onsubmit="login(event)">
+            <input type="email" id="login-email" placeholder="Email Address" class="login-input" required>
+            <input type="password" id="login-password" placeholder="Password" class="login-input" required>
+             <!-- Show password checkbox -->
+             <div class="show-password-container">
+                <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()">
+                <label for="show-password">Show Password</label>
+            </div>
+
+            <button type="submit" class="login-button">Login</button>
+            <div class="loading" id="login-loading">Logging in...</div>
+            <div class="error-message" id="login-error-message"></div>
+        </form>
+    </div>
+    <script>
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('login-password');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+            } else {
+                passwordField.type = 'password';
+            }
+        }
+    </script>
+    
+    <script>
+        async function login(event) {
+            event.preventDefault();
+    
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorMessage = document.getElementById('login-error-message');
+            const loadingIndicator = document.getElementById('login-loading');
+    
+            errorMessage.style.display = 'none';
+            loadingIndicator.style.display = 'block';
+    
+            try {
+                const response = await fetch('http://localhost:5000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+    
+                const data = await response.json();
+                console.log(data);
+    
+                if (response.ok) {
+                    alert('Login successful');
+                    window.location.href = "./home.html"; 
+                } else {
+                    errorMessage.textContent = data.error;
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                loadingIndicator.style.display = 'none';
+                errorMessage.textContent = 'Network error. Please try again later.';
+                errorMessage.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

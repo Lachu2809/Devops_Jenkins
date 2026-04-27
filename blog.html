@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - DeptzCS</title>
+    <link rel="icon" href="logo2.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: linear-gradient(135deg, #010a13, #0e0e0e);
+            color: #fff;
+            font-family: 'Audiowide', sans-serif;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        .title {
+            color: #00bfff;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .blog-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .blog-post {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #00bfff;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            color: #00bfff;
+        }
+
+        .post-content {
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        .post-image {
+            max-width: 100%;
+    max-height: 350px; /* Adjust this value as needed */
+    height: auto;
+    display: block;
+    margin-top: 10px;
+    border-radius: 10px;
+        }
+
+        .form-container {
+            margin-top: 20px;
+        }
+
+        .input-field {
+            width: calc(50% - 10px);
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #00bfff;
+            border-radius: 5px;
+            background: #f4f4f4;
+            color: #000;
+        }
+
+        .file-input {
+            margin-top: 10px;
+            color: white;
+        }
+
+        .add-button {
+            padding: 10px 20px;
+            background-color: #00bfff;
+            border: none;
+            border-radius: 5px;
+            color: #000;
+            cursor: pointer;
+        }
+
+        .add-button:hover {
+            background-color: #007acc;
+        }
+
+        @media (max-width: 768px) {
+            .input-field {
+                width: 100%;
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+
+            .form-container {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="Main_logo.png" alt="DeptzCS Logo" class="logo">
+    <h1 class="title">Technology Blog</h1>
+</header>
+
+<div class="blog-container">
+    <div id="blogPosts">
+        <div class="blog-post">
+            <h2 class="post-title">Latest Trends in Artificial Intelligence</h2>
+            <p class="post-content">Artificial intelligence is transforming industries by enhancing decision-making...</p>
+        </div>
+        <div class="blog-post">
+            <h2 class="post-title">The Rise of Quantum Computing</h2>
+            <p class="post-content">Quantum computing is on the verge of revolutionizing data processing capabilities...</p>
+        </div>
+        <div class="blog-post">
+            <h2 class="post-title">Blockchain Technology Beyond Cryptocurrency</h2>
+            <p class="post-content">Blockchain is now being applied in various sectors such as healthcare, finance, and supply chain...</p>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <input type="text" id="postTitle" class="input-field" placeholder="Blog Post Title" required>
+        <textarea id="postContent" class="input-field" placeholder="Blog Post Content" rows="3" required></textarea>
+        <input type="file" id="postImage" class="file-input" accept="image/*">
+        <button class="add-button" onclick="addBlogPost()">Add Post</button>
+    </div>
+</div>
+
+<script>
+    function addBlogPost() {
+        const title = document.getElementById('postTitle').value;
+        const content = document.getElementById('postContent').value;
+        const imageInput = document.getElementById('postImage');
+        const blogPostsContainer = document.getElementById('blogPosts');
+
+        if (!title || !content) {
+            alert("Please enter both title and content!");
+            return;
+        }
+
+        // Create new blog post container
+        const newPost = document.createElement('div');
+        newPost.className = 'blog-post';
+
+        // Add title and content
+        newPost.innerHTML = `<h2 class="post-title">${title}</h2><p class="post-content">${content}</p>`;
+
+        // Handle image upload
+        if (imageInput.files.length > 0) {
+            const imageFile = imageInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const imgElement = document.createElement('img');
+                imgElement.src = e.target.result;
+                imgElement.className = 'post-image';
+                newPost.appendChild(imgElement);
+            };
+
+            reader.readAsDataURL(imageFile);
+        }
+
+        // Append new post
+        blogPostsContainer.appendChild(newPost);
+
+        // Clear input fields
+        document.getElementById('postTitle').value = '';
+        document.getElementById('postContent').value = '';
+        document.getElementById('postImage').value = '';
+    }
+</script>
+
+</body>
+</html>
